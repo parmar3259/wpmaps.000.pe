@@ -11,7 +11,7 @@
     <title>Hello, Ashok How was your day!</title>
   </head>
   <body>
-    <h1>Hello, sample sdata </h1>
+    <h1>Hello, Ashok How was your day!</h1>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
