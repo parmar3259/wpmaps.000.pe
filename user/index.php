@@ -1,3 +1,23 @@
+<?php
+include('../database/connection.php');
+
+// Query to count rows in the "products" table
+$sql = "SELECT COUNT(*) AS count FROM products";
+$result = mysqli_query($conn, $sql);
+
+if ($result) {
+    $row = mysqli_fetch_assoc($result);
+    $rowCount = $row['count'];
+    
+    if ($rowCount == 0) {
+        // The "products" table is empty, redirect to closed.php
+        header('Location: ../closed.php');
+        exit();
+    }
+} else {
+    die("Error counting rows: " . mysqli_error($conn));
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -117,9 +137,7 @@
 
 
     <?php  
-            include('../database/connection.php');
-
-            
+            // include('../database/connection.php');
             $sql = "SELECT * FROM category where cat_of_month = 1";
             $fetchproductresult = mysqli_query($conn, $sql);
             if (mysqli_num_rows($fetchproductresult) != 0) {
