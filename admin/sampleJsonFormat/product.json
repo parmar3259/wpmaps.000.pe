@@ -1,0 +1,62 @@
+[
+    {
+        "product_name": "Product 1",
+        "product_brand": "Brand A",
+        "category_name": "Shoes",
+        "size_option": "digit",
+        "product_size_digit": "10",
+        "product_rate": 19.99,
+        "product_color": "Red",
+        "product_description": "Description for Product 1",
+        "product_Specification": "Specification for Product 1",
+        "product_image_path": "phttps://drive.google.com/file/d/1-FLec-Kj5yLDf7cQ4I5QjlZV298uhoDC/view?usp=drive_link"
+    },
+    {
+        "product_name": "Product 2",
+        "product_brand": "Brand B",
+        "category_name": "Jeans",
+        "size_option": "roman",
+        "product_size_roman": "XL,C,L,S,XXL",
+        "product_rate": 29.99,
+        "product_color": "Blue,Blue,Blue,Blue,Blue,Blue,Blue",
+        "product_description": "Description for Product 2",
+        "product_Specification": "Specification for Product 2",
+        "product_image_path": "https://drive.google.com/file/d/1-FLec-Kj5yLDf7cQ4I5QjlZV298uhoDC/view?usp=drive_link"
+    },
+    {
+        "product_name": "Product 3",
+        "product_brand": "Brand A",
+        "category_name": "Shoes",
+        "size_option": "digit",
+        "product_size_digit": "8",
+        "product_rate": 14.99,
+        "product_color": "Green",
+        "product_description": "Description for Product 3",
+        "product_Specification": "Specification for Product 3",
+        "product_image_path": "https://drive.google.com/file/d/1-FLec-Kj5yLDf7cQ4I5QjlZV298uhoDC/view?usp=drive_link"
+    },
+    {
+        "product_name": "Product 4",
+        "product_brand": "Brand C",
+        "category_name": "Jeans",
+        "size_option": "digit",
+        "product_size_digit": "12",
+        "product_rate": 24.99,
+        "product_color": "Yellow",
+        "product_description": "Description for Product 4",
+        "product_Specification": "Specification for Product 4",
+        "product_image_path": "https://drive.google.com/file/d/1-FLec-Kj5yLDf7cQ4I5QjlZV298uhoDC/view?usp=drive_link"
+    },
+    {
+        "product_name": "Product 5",
+        "product_brand": "Brand B",
+        "category_name": "Shoes",
+        "size_option": "roman",
+        "product_size_roman": "XL,C,L,S,XXL",
+        "product_rate": 34.99,
+        "product_color": "Purple",
+        "product_description": "Description for Product 5",
+        "product_Specification": "Specification for Product 5",
+        "product_image_path": "https://drive.google.com/file/d/1-FLec-Kj5yLDf7cQ4I5QjlZV298uhoDC/view?usp=drive_link"
+    }
+]
