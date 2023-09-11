@@ -1,33 +1,4 @@
-/*
 
-TemplateMo 571 Hexashop
-
-https://templatemo.com/tm-571-hexashop
-
-*/
-
-/* ---------------------------------------------
-Table of contents
-------------------------------------------------
-01. font & reset css
-02. reset
-03. global styles
-04. header
-05. banner
-06. features
-07. testimonials
-08. contact
-09. footer
-10. preloader
-11. search
-12. portfolio
-
---------------------------------------------- */
-/* 
----------------------------------------------
-font & reset css
---------------------------------------------- 
-*/
 @import url("https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900");
 /* 
 ---------------------------------------------
@@ -2376,4 +2347,24 @@ responsive
   100% {
     opacity: 0;
   }
+}
+/* Style for the "Coming Soon" label */
+.coming-soon-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(222, 206, 206, 0.463); /* Red background with opacity */
+  color: #000000; /* Text color */
+  padding: 10px 20px;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Apply pointer-events to prevent clicking */
+.coming-soon-label {
+  pointer-events: none;
 }

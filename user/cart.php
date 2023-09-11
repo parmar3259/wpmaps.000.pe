@@ -203,55 +203,6 @@
     <?php
     include('./footer.php');
     ?>
-    <!-- <script>
-        function removeFromCart(user_id, productid, productSize) {
-            // Make an AJAX request to cartdelete.php with the parameters
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                    // Handle the response from deleteCartItem.php if needed
-                    console.log(this.responseText);
-
-
-                }
-            };
-            xhttp.open("GET", "./cart/deleteCartItem.php?user_id=" + user_id + "&product_id=" + productid + "&sproduct_size=" + productSize, true);
-            xhttp.send();
-        }
-    </script> -->
-
-    <!-- JavaScript code for updating the cart -->
-    <script>
-        // Add event listeners to update cart buttons
-        // var updateButtons = document.getElementsByClassName('update-cart');
-        // Array.prototype.forEach.call(updateButtons, function(button) {
-        //     button.addEventListener('click', function() {
-        //         var userId = button.getAttribute('data-user-id');
-        //         var productId = button.getAttribute('data-product-id');
-        //         var quantityInput = document.getElementById('quantity' + productId);
-        //         var newQuantity = quantityInput.value;
-
-        //         // Perform the update operation using AJAX or form submission
-        //         // Here, I'll provide an example using jQuery AJAX
-        //         $.ajax({
-        //             url: 'update_cart.php', // Replace with the actual update script URL
-        //             method: 'POST',
-        //             data: {
-        //                 user_id: userId,
-        //                 product_id: productId,
-        //                 quantity: newQuantity
-        //             },
-        //             success: function(response) {
-        //                 // Handle the success response, if needed
-        //                 // You can update the cart display dynamically or refresh the page
-        //             },
-        //             error: function(xhr, status, error) {
-        //                 // Handle the error, if needed
-        //             }
-        //         });
-        //     });
-        // });
-    </script>
 </body>
 
 </html>
