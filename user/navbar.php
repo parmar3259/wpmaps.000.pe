@@ -110,10 +110,10 @@
                       
 
                         ?>
-<!-- Display the total count as a badge -->
-<span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-    <?php echo $total_count; ?>
-</span>                    </a>
+                        <!-- Display the total count as a badge -->
+                        <span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
+                            <?php echo $total_count; ?>
+                        </span>                    </a>
 
 
                     <a class="nav-icon position-relative text-decoration-none" href="../admin/logout.php">
