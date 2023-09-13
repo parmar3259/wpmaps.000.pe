@@ -20,7 +20,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             $_SESSION['fullname'] = $fullname;
             $_SESSION['email'] = $email;
             if (isset($product_id)) {
-                header("Location: shop-single.php?id=" . $product_id);
+                header("Location: single-product.php?id=" . $product_id);
             } else {
                 header("Location: index.php");
                 exit(); // Optional: Add an exit() statement to terminate the current script execution
@@ -70,7 +70,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                        
                         if (isset($product_id)) {
                           
-                            header("Location: shop-single.php?id=" . $product_id);
+                            header("Location: single-product.php?id=" . $product_id);
                         } else {
                             header("Location: index.php");
                          
@@ -98,11 +98,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <title>Login/SignUp page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="./assets/css/login.css">
-
-
-
-
-   
 
 </head>
 

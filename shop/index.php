@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<?php require('./extra_file/header.php'); ?>
+<?php 
+require('./extra_file/header.php');
+require('../database/connection.php');
+?>
 
 
 <body>
@@ -129,123 +132,7 @@
             </div>
         </div>
     </div>
-    <!-- ***** Main Banner Area End ***** -->
 
-    <!-- ***** Men Area Starts ***** -->
-    <section class="section" id="men">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6">
-                    <div class="section-heading">
-                        <h2>Men's Latest</h2>
-                        <span>Details to details is what makes Hexashop different from the other themes.</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <div class="men-item-carousel">
-                        <div class="owl-men-item owl-carousel">
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/men-01.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/men-02.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Air Force 1 X</h4>
-                                    <span>$90.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/men-03.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Love Nana ‘20</h4>
-                                    <span>$150.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/men-01.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
     <!-- ***** Men Area Ends ***** -->
 
     <!-- ***** Women Area Starts ***** -->
@@ -265,20 +152,58 @@
                 <div class="col-lg-12">
                     <div class="women-item-carousel">
                         <div class="owl-women-item owl-carousel">
+                        <?php
+
+                            $sql = "SELECT * FROM products";
+                            $fetchproductresult = mysqli_query($conn, $sql);
+                            if (mysqli_num_rows($fetchproductresult) == 0) {
+                                echo "<h1>No products to display</h1>";
+                            } else {
+
+
+                                while ($row = mysqli_fetch_assoc($fetchproductresult)) {
+                                    $id = $row['product_id'];
+                                    $productImage = $row['product_image_path'];
+
+
+                                        if ($row['upload_through'] == 'json') {
+                                        // Extract the file ID using regular expressions
+                                        $pattern = '/\/d\/(.*?)\//';
+                                        preg_match($pattern, $productImage, $matches);
+                                        if (isset($matches[1])) {
+                                            $fileId = $matches[1];
+                                            $path = 'https://drive.google.com/uc?id=' . $fileId;
+
+                                        }
+                                        }else{
+                                            $productImage = ltrim($productImage, '.');
+                                            $prefix = "../admin";
+                                            $path = $prefix . $productImage;
+                                        }
+                                        
+
+                                        $size = $row['product_size'];
+                                        $size_array = explode(",", $size); // Split the string into an array based on commas
+                                        $first_five_values = array_slice($size_array, 0, 5); // Extract the first 5 values
+                                        $first_five_values_string = implode(', ', $first_five_values); // Convert the array to a string
+
+                        ?>
                             <div class="item">
                                 <div class="thumb">
                                     <div class="hover-content">
                                         <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
+                                            <li><a href="single-product.php?id=<?php echo $id; ?>"><i class="fa fa-eye"></i></a></li>
                                             <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
                                             <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
                                         </ul>
                                     </div>
-                                    <img src="assets/images/women-01.jpg" alt="">
+                                    <img src="<?php echo $path; ?>" alt="">
                                 </div>
                                 <div class="down-content">
-                                    <h4>New Green Jacket</h4>
-                                    <span>$75.00</span>
+                                    <h4><?php echo $row['product_name']; ?></h4>
+                                    <h5><?php echo "Available Sizes - ". $first_five_values_string; ?></h4>
+
+                                    <span style="text-align: center;">₹<?php echo $row['product_rate']; ?></span>
                                     <ul class="stars">
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
@@ -286,77 +211,15 @@
                                         <li><i class="fa fa-star"></i></li>
                                         <li><i class="fa fa-star"></i></li>
                                     </ul>
+                                  
                                 </div>
                             </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/women-02.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Dress</h4>
-                                    <span>$45.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/women-03.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Spring Collection</h4>
-                                    <span>$130.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/women-01.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
+
+                            <?php
+                              }
+                             }
+                         ?>
+
                         </div>
                     </div>
                 </div>
@@ -382,98 +245,75 @@
                 <div class="col-lg-12">
                     <div class="kid-item-carousel">
                         <div class="owl-kid-item owl-carousel">
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/kid-01.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>School Collection</h4>
-                                    <span>$80.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/kid-02.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Summer Cap</h4>
-                                    <span>$12.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/kid-03.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Kid</h4>
-                                    <span>$30.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
-                            <div class="item">
-                                <div class="thumb">
-                                    <div class="hover-content">
-                                        <ul>
-                                            <li><a href="single-product.php"><i class="fa fa-eye"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
-                                            <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
-                                        </ul>
-                                    </div>
-                                    <img src="assets/images/kid-01.jpg" alt="">
-                                </div>
-                                <div class="down-content">
-                                    <h4>Classic Spring</h4>
-                                    <span>$120.00</span>
-                                    <ul class="stars">
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                        <li><i class="fa fa-star"></i></li>
-                                    </ul>
-                                </div>
-                            </div>
+                        <?php
+
+$sql = "SELECT * FROM products";
+$fetchproductresult = mysqli_query($conn, $sql);
+if (mysqli_num_rows($fetchproductresult) == 0) {
+    echo "<h1>No products to display</h1>";
+} else {
+
+
+    while ($row = mysqli_fetch_assoc($fetchproductresult)) {
+        $id = $row['product_id'];
+        $productImage = $row['product_image_path'];
+
+
+            if ($row['upload_through'] == 'json') {
+            // Extract the file ID using regular expressions
+            $pattern = '/\/d\/(.*?)\//';
+            preg_match($pattern, $productImage, $matches);
+            if (isset($matches[1])) {
+                $fileId = $matches[1];
+                $path = 'https://drive.google.com/uc?id=' . $fileId;
+
+            }
+            }else{
+                $productImage = ltrim($productImage, '.');
+                $prefix = "../admin";
+                $path = $prefix . $productImage;
+            }
+            
+
+            $size = $row['product_size'];
+            $size_array = explode(",", $size); // Split the string into an array based on commas
+            $first_five_values = array_slice($size_array, 0, 5); // Extract the first 5 values
+            $first_five_values_string = implode(', ', $first_five_values); // Convert the array to a string
+
+?>
+<div class="item">
+    <div class="thumb">
+        <div class="hover-content">
+            <ul>
+                <li><a href="single-product.php?id=<?php echo $id; ?>"><i class="fa fa-eye"></i></a></li>
+                <li><a href="single-product.php"><i class="fa fa-star"></i></a></li>
+                <li><a href="single-product.php"><i class="fa fa-shopping-cart"></i></a></li>
+            </ul>
+        </div>
+        <img src="<?php echo $path; ?>" alt="">
+    </div>
+    <div class="down-content">
+        <h4><?php echo $row['product_name']; ?></h4>
+        <h5><?php echo "Available Sizes - ". $first_five_values_string; ?></h4>
+
+        <span style="text-align: center;">₹<?php echo $row['product_rate']; ?></span>
+        <ul class="stars">
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+            <li><i class="fa fa-star"></i></li>
+        </ul>
+      
+    </div>
+</div>
+
+<?php
+  }
+ }
+?>
+
+                            
                         </div>
                     </div>
                 </div>

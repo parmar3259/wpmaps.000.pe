@@ -43,7 +43,7 @@ if(isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
                 if (mysqli_query($conn, $updateQuery)) {
                     if (isset($product_id)) {
                           
-                        header("Location: ../shop-single.php?id=" . $product_id);
+                        header("Location: ../single-product.php?id=" . $product_id);
                     }
                 } else {
                     echo "Error updating quantity: " . mysqli_error($conn);
@@ -56,7 +56,7 @@ if(isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
                 if (mysqli_query($conn, $insertQuery)) {
                     if (isset($product_id)) {
                           
-                        header("Location: ../shop-single.php?id=" . $product_id);
+                        header("Location: ../single-product.php?id=" . $product_id);
                     }
                 } else {
                     echo "Error inserting data: " . mysqli_error($conn);

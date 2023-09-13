@@ -1745,7 +1745,7 @@ Single Product Page
   color: #aaaaaa;
   font-weight: 500;
   display: block;
-  margin-top: 25px;
+  margin-top: 15px;
 }
 
 #product .right-content .quote {
@@ -2368,3 +2368,5 @@ responsive
 .coming-soon-label {
   pointer-events: none;
 }
+
+
