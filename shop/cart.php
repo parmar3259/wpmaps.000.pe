@@ -10,7 +10,7 @@
 
 <style type="text/css">
     body {
-        margin-top: 20px;
+        margin-top: 120px;
     }
 
     .cart-item-thumb {
