@@ -171,7 +171,7 @@
                 </div>
             </div>
         <?php
-                                        if (isset($_SESSION['fullname']) && isset($_SESSION['email'])) {
+                                        if (isset($_SESSION['fullname']) && isset($_SESSION['email'])) { 
 
                                         ?>
             <div class="quantity-content">
