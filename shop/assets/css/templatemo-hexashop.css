@@ -2370,3 +2370,19 @@ responsive
 }
 
 
+.logo img {
+  max-width: 100%;
+  height: auto;
+}
+
+@media (max-width: 767px) { /* Styles for phones */
+  .logo img {
+      max-width: 80px; /* Adjust the width for phones */
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991px) { /* Styles for tablets */
+  .logo img {
+      max-width: 120px; /* Adjust the width for tablets */
+  }
+}
