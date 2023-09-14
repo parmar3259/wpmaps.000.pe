@@ -78,31 +78,46 @@
 
                 $size_array_color = explode(",", $color); // Split the string into an array based on commas
 
-                $html_color = '<div class="form-group">';
-                $html_color .= '<label for="product_color"><h6>Available Color:</h6></label>';
-                $html_color .= '<select class="form-control" name="product_color" required>';
+
+
+
+                $size_array = explode(",", $product_size); // Split the string into an array based on commas
+                $color_array = explode(",", $color); // Split the string into an array based on commas
                 
-                foreach ($size_array_color as $size) {
-                    $html_color .= '<option value="' . $size . '">' . $size . '</option>';
+                // Create dropdown for size
+                $html = '<div class="form-group">';
+                $html .= '<label for="product_size"><h6>Size:</h6></label>';
+                $html .= '<select class="form-control" name="product_size" required>';
+                $html .= '<option value="" selected disabled>Select a size</option>'; // Add an empty default option
+                foreach ($size_array as $size) {
+                    $html .= '<option value="' . $size . '">' . $size . '</option>';
                 }
+                $html .= '</select>';
+                $html .= '</div>';
                 
+                // Create dropdown for color
+                $html_color = '<div class="form-group">';
+                $html_color .= '<label for="product_color"><h6>Color:</h6></label>';
+                $html_color .= '<select class="form-control" name="product_color" required>';
+                $html_color .= '<option value="" selected disabled>Select a color</option>'; // Add an empty default option
+                foreach ($color_array as $color) {
+                    $html_color .= '<option value="' . $color . '">' . $color . '</option>';
+                }
                 $html_color .= '</select>';
                 $html_color .= '</div>';
                 
-                $output_color = $html_color;
+                // Combine the HTML for size and color dropdowns
+                $output_html = '<div class="row">';
+                $output_html .= '<div class="col-md-6">' . $html . '</div>';
+                $output_html .= '<div class="col-md-6">' . $html_color . '</div>';
+                $output_html .= '</div>';
                 
 
 
 
-            $size_array = explode(",", $product_size); // Split the string into an array based on commas
-            $html = '<ul class="list-inline pb-3">';
-            $html .= '<li class="list-inline-item"> <h6>Size :</h6></li>';
-            foreach ($size_array as $size) {
-                $html .= '<li class="list-inline-item"><input type="radio" name="product_size" value="' . $size . '" required> ' . $size . '</li>';
-            }
-            $html .= '</ul>';
-            // Store the HTML code in a variable
-            $output_html = $html;
+
+
+                
         }
         ?>
         <div class="container">
@@ -156,9 +171,7 @@
             <input type="hidden" name="product_id" value="<?php echo $id; ?>">
 
             <div class="row">
-                <div class="col-auto">
-                    <?php echo $output_color; ?>
-                </div>
+               
                 <div class="col-auto">
                     <!-- Size options -->
                     <?php if (isset($size_option) && $size_option == 'roman') { ?>

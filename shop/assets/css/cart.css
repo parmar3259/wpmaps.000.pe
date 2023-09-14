@@ -46,3 +46,7 @@
     .font-weight-semibold {
         font-weight: 600 !important;
     }
+    .custom-message {
+        padding: 10px; /* Adjust the padding as needed */
+        margin: 10px 0; /* Adjust the margin as needed */
+    }

@@ -7,7 +7,6 @@ session_start();
 
 // Initialize a response array
 $response = array();
-print_r($_POST);
 if (isset($_POST['cart_id']) && isset($_POST['quantity'])) {
     $cart_id = $_POST['cart_id'];
     $quantity = $_POST['quantity'];

@@ -20,6 +20,8 @@
                             </svg>Continue shopping</a>
                     </h2>
 
+
+
                     <?php
                     include('../database/connection.php');
                     if (isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
@@ -40,6 +42,7 @@
 
 
                     $cartResult = mysqli_query($conn, $cartQuery);
+
                     while ($cartRow = mysqli_fetch_assoc($cartResult)) {
 
                         $cart_id = $cartRow['cart_id'];
@@ -74,18 +77,19 @@
 
                     ?>
 
+                        <div id="update-message" class="alert alert-success custom-message" style="display: none;"></div>
+                        <div class="product-container" data-productid="<?php echo $cart_id; ?>">
 
-                        <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-                            <div class="media d-block d-sm-flex text-center text-sm-left">
-                                <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="<?php echo $productImage;    ?>" alt="Product"></a>
-                                <div class="media-body pt-3">
-                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#"><?php echo $productName;    ?></a></h3>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">Size:</span><?php echo $productSize;    ?></div>
-                                    <div class="font-size-sm"><span class="text-muted mr-2">Color:</span><?php echo $productcolor;    ?></div>
-                                    <div class="font-size-lg text-primary pt-2"> ₹<?php echo $productrate;    ?></div>
+                            <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+                                <div class="media d-block d-sm-flex text-center text-sm-left">
+                                    <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="<?php echo $productImage;    ?>" alt="Product"></a>
+                                    <div class="media-body pt-3">
+                                        <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#"><?php echo $productName;    ?></a></h3>
+                                        <div class="font-size-sm"><span class="text-muted mr-2">Size:</span><?php echo $productSize;    ?></div>
+                                        <div class="font-size-sm"><span class="text-muted mr-2">Color:</span><?php echo $productcolor;    ?></div>
+                                        <div class="font-size-lg text-primary pt-2"> ₹<?php echo $productrate;    ?></div>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="product-container" data-productid="<?php echo $cart_id; ?>">
 
                                 <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
                                     <div class="form-group mb-2">
@@ -107,6 +111,7 @@
                                             <line x1="14" y1="11" x2="14" y2="17"></line>
                                         </svg>Remove</button>
                                 </div>
+
                             </div>
                         </div>
 
@@ -117,15 +122,17 @@
 
                 <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
                     <h2 class="h6 px-4 py-3 bg-secondary text-center">Subtotal</h2>
-                    <div class="h3 font-weight-semibold text-center py-3">₹<?php echo number_format($total, 2); ?></div>
+                    <div class="h3 font-weight-semibold text-center py-3" id="subtotal">₹</div>
                     <hr>
                     <a class="btn btn-primary btn-block" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card mr-2">
                             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                             <line x1="1" y1="10" x2="23" y2="10"></line>
-                        </svg>Proceed to Checkout</a>
-
+                        </svg>Proceed to Checkout
+                    </a>
                 </div>
+
+
             </div>
         </div>
     </section>
@@ -135,45 +142,64 @@
 
     <?php require('./extra_file/script.php'); ?>
     <script>
-       $(document).ready(function () {
-    // Handle click on the "Update" button
-    $('.update-button').on('click', function () {
-        // Find the parent product container
-        var productContainer = $(this).closest('.product-container');
-        var cart_id = productContainer.data('productid'); // Use 'cart_id' instead of 'productID'
+        $(document).ready(function() {
 
-        // Get the quantity input value
-        var quantity = $('#quantity' + cart_id).val(); // Use 'cart_id' instead of 'productID'
- console.log(quantity);
-        // Prepare the data to send to cart_update.php
-        var requestData = {
-            cart_id: cart_id, // Use 'cart_id' instead of 'productID'
-            quantity: quantity
-        };
-
-        // Send an AJAX request to cart_update.php
-        $.ajax({
-            url: './cart/updatecart.php',
-            method: 'POST',
-            data: requestData,
-            dataType: 'json', // Expect JSON response
-            success: function (response) {
-                if (response.success) {
-                    // Update was successful, handle success message
-                    console.log(response.message);
-                    // You can update the UI or take other actions here
-                } else {
-                    // Update encountered an error, handle error message
-                    console.error(response.message);
-                }
-            },
-            error: function (xhr, status, error) {
-                // Handle any errors that occur during the AJAX request
-                console.error(error);
+            function updateSubtotal() {
+                $.ajax({
+                    url: './cart/fetch_total.php',
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response && response.total) {
+                            // Update the subtotal element
+                            $('#subtotal').text('₹' + response.total.toFixed(2));
+                        }
+                    },
+                    error: function() {
+                        console.error('Error fetching cart total');
+                    }
+                });
             }
-        });
 
-    });
+            // Initial update of subtotal
+            updateSubtotal();
+
+            $('.update-button').on('click', function() {
+                var productContainer = $(this).closest('.product-container');
+                var cart_id = productContainer.data('productid');
+                var quantity = $('#quantity' + cart_id).val();
+                var requestData = {
+                    cart_id: cart_id,
+                    quantity: quantity
+                };
+                var updateMessage = $('#update-message'); // Cache the element for better performance
+
+                $.ajax({
+                    url: './cart/updatecart.php',
+                    method: 'POST',
+                    data: requestData,
+                    dataType: 'json',
+                    success: function(response) {
+                        if (response.success) {
+                            var message = response.message;
+                            updateMessage.text(message).removeClass('alert-danger').addClass('alert-success custom-message').show();
+                            updateSubtotal();
+
+                        } else {
+                            var errorMessage = response.message;
+                            updateMessage.text(errorMessage).removeClass('alert-success').addClass('alert-danger custom-message').show();
+                            console.error(errorMessage);
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = "An error occurred while updating.";
+                        updateMessage.text(errorMessage).removeClass('alert-success').addClass('alert-danger custom-message').show();
+                        console.error(errorMessage);
+                    }
+                });
+
+            });
+
 
 
 
@@ -182,17 +208,33 @@
             $('.remove-button').on('click', function() {
                 // Find the parent product container
                 var productContainer = $(this).closest('.product-container');
-                var productID = productContainer.data('productid');
 
-                // Perform your remove logic here
-                // You can use AJAX to send the product ID to the server for removal
-                // Example: $.ajax({ url: 'remove.php', data: { productID: productID }, success: function(response) { } });
+                // Get the cart_id from the data attribute
+                var cart_id = productContainer.data('productid');
+                var updateMessage = $('#update-message'); // Cache the element for better performance
+                // Send an AJAX request to deleteCartitem.php
+                $.ajax({
+                    type: 'POST',
+                    url: './cart/deleteCartItem.php', // Update the URL to the correct path
+                    data: {
+                        cart_id: cart_id
+                    },
+                    success: function(response) {
 
-                console.log("hardik delete");
+                        var message = response.message;
+                        updateMessage.text(message).removeClass('alert-danger').addClass('alert-danger custom-message').show();
 
-                // Remove the product container from the DOM
-                // productContainer.remove();
+                        productContainer.remove();
+
+                    },
+                    error: function(xhr, status, error) {
+                        var errorMessage = response.message;
+                        updateMessage.text(errorMessage).removeClass('alert-success').addClass('alert-danger custom-message').show();
+                        console.error(errorMessage);
+                    }
+                });
             });
+
         });
 
         $(function() {
