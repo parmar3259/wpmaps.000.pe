@@ -35,7 +35,7 @@ if ($result) {
     
     if ($rowCount > 0) {
         // The "products" table has data, redirect to user/index.php
-        header('Location: ./user/index.php');
+        header('Location: ./shop/index.php');
     } else {
         // The "products" table is empty, redirect to closed.php
         header('Location: ./closed.php');
