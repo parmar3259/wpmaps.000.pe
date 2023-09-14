@@ -7,16 +7,10 @@ session_start();
 
 // Initialize a response array
 $response = array();
-print_r($_POST);
-if (isset($_POST['cart_id']) && isset($_POST['quantity'])) {
-    $cart_id = $_POST['cart_id'];
-    $quantity = $_POST['quantity'];
-    // Your code here
-} else {
-    // Handle the case when data is not received as expected
-    echo json_encode(['success' => false, 'message' => 'Data not received as expected.']);
-}
 
+// Retrieve the submitted form data
+$cart_id = $_POST['cart_id'];
+$quantity = $_POST['quantity'];
 
 if ($quantity == 0) {
     $quantity = 1;

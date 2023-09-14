@@ -1,78 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<?php // require('./extra_file/header.php'); 
-?>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css" rel="stylesheet">
 <link rel="stylesheet" href="assets/css/templatemo-hexashop.css">
 <link rel="stylesheet" href="assets/css/owl-carousel.css">
-
-<style type="text/css">
-    body {
-        margin-top: 120px;
-    }
-
-    .cart-item-thumb {
-        display: block;
-        width: 10rem
-    }
-
-    .cart-item-thumb>img {
-        display: block;
-        width: 100%
-    }
-
-    .product-card-title>a {
-        color: #222;
-    }
-
-    .font-weight-semibold {
-        font-weight: 600 !important;
-    }
-
-    .product-card-title {
-        display: block;
-        margin-bottom: .75rem;
-        padding-bottom: .875rem;
-        border-bottom: 1px dashed #e2e2e2;
-        font-size: 1rem;
-        font-weight: normal;
-    }
-
-    .text-muted {
-        color: #888 !important;
-    }
-
-    .bg-secondary {
-        background-color: #f7f7f7 !important;
-    }
-
-    .accordion .accordion-heading {
-        margin-bottom: 0;
-        font-size: 1rem;
-        font-weight: bold;
-    }
-
-    .font-weight-semibold {
-        font-weight: 600 !important;
-    }
-</style>
+<link rel="stylesheet" href="assets/css/cart.css">
 
 <body>
-
-    <!-- <div id="preloader">
-        <div class="jumper">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-    </div> -->
-    <!-- ***** Preloader End ***** -->
-
-
-    <!-- ***** Header Area Start ***** -->
-    <?php require('./extra_file/navbar.php'); ?>
+    <?php require('./extra_file/navbar.php');
+    session_start();
+    ?>
     <section class="section">
         <div class="container pb-5 mt-n2 mt-md-n3">
             <div class="row">
@@ -83,222 +20,111 @@
                             </svg>Continue shopping</a>
                     </h2>
 
-                    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-left">
-                            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://www.bootdey.com/image/240x240/FF0000/000000" alt="Product"></a>
-                            <div class="media-body pt-3">
-                                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">Calvin Klein
-                                        Jeans Keds</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>8.5</div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Black</div>
-                                <div class="font-size-lg text-primary pt-2">$125.00</div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-                            <div class="form-group mb-2">
-                                <label for="quantity1">Quantity</label>
-                                <input class="form-control form-control-sm" type="number" id="quantity1" value="1">
-                            </div>
-                            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                                </svg>Update cart</button>
-                            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>Remove</button>
-                        </div>
-                    </div>
+                    <?php
+                    include('../database/connection.php');
+                    if (isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
+                        $fullname = $_SESSION['fullname'];
+                        $email = $_SESSION['email'];
+                        $query = "SELECT id FROM login WHERE fullname = '$fullname' AND email = '$email'";
+                        $result = mysqli_query($conn, $query);
+                        while ($row = mysqli_fetch_assoc($result)) {
+                            $user_id = $row['id'];
+                        }
+                    }
+                    // Fetch cart data for the user from cartdata table
+                    $cartQuery = "SELECT cartdata.cart_id,cartdata.product_size, cartdata.product_color, cartdata.product_Quantity, products.product_image_path, products.product_name, products.product_rate, products.upload_through, products.product_id
+              FROM cartdata
+              JOIN products ON cartdata.product_id = products.product_id
+              WHERE cartdata.user_id = '$user_id'";
+                    $total = 0;
 
-                    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-left">
-                            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://www.bootdey.com/image/240x240/1E90FF/000000" alt="Product"></a>
-                            <div class="media-body pt-3">
-                                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">The North Face
-                                        Hoodie</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Size:</span>XL</div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Gray</div>
-                                <div class="font-size-lg text-primary pt-2">$134.00</div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-                            <div class="form-group mb-2">
-                                <label for="quantity2">Quantity</label>
-                                <input class="form-control form-control-sm" type="number" id="quantity2" value="1">
-                            </div>
-                            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                                </svg>Update cart</button>
-                            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>Remove</button>
-                        </div>
-                    </div>
 
-                    <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
-                        <div class="media d-block d-sm-flex text-center text-sm-left">
-                            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://www.bootdey.com/image/240x240/FF8C00/000000" alt="Product"></a>
-                            <div class="media-body pt-3">
-                                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">Medicine
-                                        Chameleon Sunglasses</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Lenses:</span>Chameleon</div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Frame:</span>Gray / Black</div>
-                                <div class="font-size-lg text-primary pt-2">$47.00</div>
-                            </div>
-                        </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-                            <div class="form-group mb-2">
-                                <label for="quantity3">Quantity</label>
-                                <input class="form-control form-control-sm" type="number" id="quantity3" value="1">
-                            </div>
-                            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                                </svg>Update cart</button>
-                            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>Remove</button>
-                        </div>
-                    </div>
+                    $cartResult = mysqli_query($conn, $cartQuery);
+                    while ($cartRow = mysqli_fetch_assoc($cartResult)) {
 
-                    <div class="d-sm-flex justify-content-between my-4">
-                        <div class="media d-block d-sm-flex text-center text-sm-left">
-                            <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="https://www.bootdey.com/image/240x240/eeeeee/000000" alt="Product"></a>
-                            <div class="media-body pt-3">
-                                <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#">Adidas
-                                        Performance Hat</a></h3>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Material:</span>Acrylic</div>
-                                <div class="font-size-sm"><span class="text-muted mr-2">Color:</span>Pink / Dark green</div>
-                                <div class="font-size-lg text-primary pt-2">$19.00</div>
+                        $cart_id = $cartRow['cart_id'];
+                        $productid = $cartRow['product_id'];
+                        $productSize = $cartRow['product_size'];
+                        $productQuantity = $cartRow['product_Quantity'];
+                        $productImage = $cartRow['product_image_path'];
+                        $productName = $cartRow['product_name'];
+                        $productcolor = $cartRow['product_color'];
+                        $productrate = $cartRow['product_rate'];
+
+                        if ($cartRow['upload_through'] == 'json') {
+                            // Extract the file ID using regular expressions
+                            $pattern = '/\/d\/(.*?)\//';
+                            preg_match($pattern, $productImage, $matches);
+                            if (isset($matches[1])) {
+                                $fileId = $matches[1];
+                                $productImage = 'https://drive.google.com/uc?id=' . $fileId;
+                            }
+                        } else {
+                            $productImage = ltrim($productImage, '.');
+                            $prefix = "../admin";
+                            $productImage = $prefix . $productImage;
+                        }
+
+
+                        // Calculate the subtotal for each item
+                        $subtotal = $productrate * $productQuantity;
+                        $total += $subtotal; // Add subtotal to the total
+
+
+
+                    ?>
+
+
+                        <div class="d-sm-flex justify-content-between my-4 pb-4 border-bottom">
+                            <div class="media d-block d-sm-flex text-center text-sm-left">
+                                <a class="cart-item-thumb mx-auto mr-sm-4" href="#"><img src="<?php echo $productImage;    ?>" alt="Product"></a>
+                                <div class="media-body pt-3">
+                                    <h3 class="product-card-title font-weight-semibold border-0 pb-0"><a href="#"><?php echo $productName;    ?></a></h3>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Size:</span><?php echo $productSize;    ?></div>
+                                    <div class="font-size-sm"><span class="text-muted mr-2">Color:</span><?php echo $productcolor;    ?></div>
+                                    <div class="font-size-lg text-primary pt-2"> ₹<?php echo $productrate;    ?></div>
+                                </div>
+                            </div>
+                            <div class="product-container" data-productid="<?php echo $cart_id; ?>">
+
+                                <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
+                                    <div class="form-group mb-2">
+                                        <label for="quantity1">Quantity</label>
+                                        <input class="form-control form-control-sm" type="number" id="quantity<?php echo $cart_id; ?>" value="<?php echo $productQuantity; ?>">
+                                    </div>
+                                    <button class="btn btn-outline-secondary btn-sm btn-block mb-2 update-button" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
+                                            <polyline points="23 4 23 10 17 10"></polyline>
+                                            <polyline points="1 20 1 14 7 14"></polyline>
+                                            <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                                        </svg>Update cart</button>
+                                    <button class="btn btn-outline-danger btn-sm btn-block mb-2 remove-button" type="button">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
+                                            <polyline points="3 6 5 6 21 6"></polyline>
+                                            <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
+                                            </path>
+                                            <line x1="10" y1="11" x2="10" y2="17"></line>
+                                            <line x1="14" y1="11" x2="14" y2="17"></line>
+                                        </svg>Remove</button>
+                                </div>
                             </div>
                         </div>
-                        <div class="pt-2 pt-sm-0 pl-sm-3 mx-auto mx-sm-0 text-center text-sm-left" style="max-width: 10rem;">
-                            <div class="form-group mb-2">
-                                <label for="quantity4">Quantity</label>
-                                <input class="form-control form-control-sm" type="number" id="quantity4" value="1">
-                            </div>
-                            <button class="btn btn-outline-secondary btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-refresh-cw mr-1">
-                                    <polyline points="23 4 23 10 17 10"></polyline>
-                                    <polyline points="1 20 1 14 7 14"></polyline>
-                                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
-                                </svg>Update cart</button>
-                            <button class="btn btn-outline-danger btn-sm btn-block mb-2" type="button">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-trash-2 mr-1">
-                                    <polyline points="3 6 5 6 21 6"></polyline>
-                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2">
-                                    </path>
-                                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                                </svg>Remove</button>
-                        </div>
-                    </div>
+
+                    <?php  } ?>
+
+
                 </div>
 
                 <div class="col-xl-3 col-md-4 pt-3 pt-md-0">
                     <h2 class="h6 px-4 py-3 bg-secondary text-center">Subtotal</h2>
-                    <div class="h3 font-weight-semibold text-center py-3">$325.00</div>
+                    <div class="h3 font-weight-semibold text-center py-3">₹<?php echo number_format($total, 2); ?></div>
                     <hr>
-                    <h3 class="h6 pt-4 font-weight-semibold"><span class="badge badge-success mr-2">Note</span>Additional
-                        comments</h3>
-                    <textarea class="form-control mb-3" id="order-comments" rows="5"></textarea>
                     <a class="btn btn-primary btn-block" href="#">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-credit-card mr-2">
                             <rect x="1" y="4" width="22" height="16" rx="2" ry="2"></rect>
                             <line x1="1" y1="10" x2="23" y2="10"></line>
                         </svg>Proceed to Checkout</a>
-                    <div class="pt-4">
-                        <div class="accordion" id="cart-accordion">
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="accordion-heading font-weight-semibold"><a href="#promocode" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="promocode">Apply
-                                            promo code<span class="accordion-indicator"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
-                                                    <polyline points="18 15 12 9 6 15"></polyline>
-                                                </svg></span></a></h3>
-                                </div>
-                                <div class="collapse show" id="promocode" data-parent="#cart-accordion">
-                                    <div class="card-body">
-                                        <form class="needs-validation" novalidate>
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" id="cart-promocode" placeholder="Promo code" required>
-                                                <div class="invalid-feedback">Please provide a valid promo code!</div>
-                                            </div>
-                                            <button class="btn btn-outline-primary btn-block" type="submit">Apply promo
-                                                code</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card">
-                                <div class="card-header">
-                                    <h3 class="accordion-heading font-weight-semibold"><a class="collapsed" href="#shipping" role="button" data-toggle="collapse" aria-expanded="true" aria-controls="shipping">Shipping estimates<span class="accordion-indicator"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-up">
-                                                    <polyline points="18 15 12 9 6 15"></polyline>
-                                                </svg></span></a></h3>
-                                </div>
-                                <div class="collapse" id="shipping" data-parent="#cart-accordion">
-                                    <div class="card-body">
-                                        <form class="needs-validation" novalidate>
-                                            <div class="form-group">
-                                                <select class="form-control custom-select" required>
-                                                    <option value>Choose your country</option>
-                                                    <option value="Australia">Australia</option>
-                                                    <option value="Belgium">Belgium</option>
-                                                    <option value="Canada">Canada</option>
-                                                    <option value="Finland">Finland</option>
-                                                    <option value="Mexico">Mexico</option>
-                                                    <option value="New Zealand">New Zealand</option>
-                                                    <option value="Switzerland">Switzerland</option>
-                                                    <option value="United States">United States</option>
-                                                </select>
-                                                <div class="invalid-feedback">Please choose your country!</div>
-                                            </div>
-                                            <div class="form-group">
-                                                <select class="form-control custom-select" required>
-                                                    <option value>Choose your city</option>
-                                                    <option value="Bern">Bern</option>
-                                                    <option value="Brussels">Brussels</option>
-                                                    <option value="Canberra">Canberra</option>
-                                                    <option value="Helsinki">Helsinki</option>
-                                                    <option value="Mexico City">Mexico City</option>
-                                                    <option value="Ottawa">Ottawa</option>
-                                                    <option value="Washington D.C.">Washington D.C.</option>
-                                                    <option value="Wellington">Wellington</option>
-                                                </select>
-                                                <div class="invalid-feedback">Please choose your city!</div>
-                                            </div>
-                                            <div class="form-group">
-                                                <input class="form-control" type="text" placeholder="ZIP / Postal code" required>
-                                                <div class="invalid-feedback">Please provide a valid zip!</div>
-                                            </div>
-                                            <button class="btn btn-outline-primary btn-block" type="submit">Calculate
-                                                shipping</button>
-                                        </form>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+
                 </div>
             </div>
         </div>
@@ -308,8 +134,67 @@
     <?php require('./extra_file/footer.php'); ?>
 
     <?php require('./extra_file/script.php'); ?>
-        <script>
-       
+    <script>
+       $(document).ready(function () {
+    // Handle click on the "Update" button
+    $('.update-button').on('click', function () {
+        // Find the parent product container
+        var productContainer = $(this).closest('.product-container');
+        var cart_id = productContainer.data('productid'); // Use 'cart_id' instead of 'productID'
+
+        // Get the quantity input value
+        var quantity = $('#quantity' + cart_id).val(); // Use 'cart_id' instead of 'productID'
+ console.log(quantity);
+        // Prepare the data to send to cart_update.php
+        var requestData = {
+            cart_id: cart_id, // Use 'cart_id' instead of 'productID'
+            quantity: quantity
+        };
+
+        // Send an AJAX request to cart_update.php
+        $.ajax({
+            url: './cart/updatecart.php',
+            method: 'POST',
+            data: requestData,
+            dataType: 'json', // Expect JSON response
+            success: function (response) {
+                if (response.success) {
+                    // Update was successful, handle success message
+                    console.log(response.message);
+                    // You can update the UI or take other actions here
+                } else {
+                    // Update encountered an error, handle error message
+                    console.error(response.message);
+                }
+            },
+            error: function (xhr, status, error) {
+                // Handle any errors that occur during the AJAX request
+                console.error(error);
+            }
+        });
+
+    });
+
+
+
+
+            // Handle click on the "Remove" button
+            $('.remove-button').on('click', function() {
+                // Find the parent product container
+                var productContainer = $(this).closest('.product-container');
+                var productID = productContainer.data('productid');
+
+                // Perform your remove logic here
+                // You can use AJAX to send the product ID to the server for removal
+                // Example: $.ajax({ url: 'remove.php', data: { productID: productID }, success: function(response) { } });
+
+                console.log("hardik delete");
+
+                // Remove the product container from the DOM
+                // productContainer.remove();
+            });
+        });
+
         $(function() {
             var selectedClass = "";
             $("p").click(function() {
@@ -322,7 +207,5 @@
                 }, 500);
 
             });
-        });</script>
-        
-
-      
+        });
+    </script>

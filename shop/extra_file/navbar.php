@@ -18,37 +18,8 @@
                             <a href="./cart.php">
                                 <img src="./assets/images/svg/cart.svg" alt="Cart Icon"> Cart
                             </a>
-                            <?php
-
-include('../database/connection.php');
-
-$fullname = $_SESSION['fullname'];
-$email = $_SESSION['email'];
-$query = "SELECT id FROM login WHERE fullname = '$fullname' AND email = '$email'";
-$result = mysqli_query($conn, $query);
-
-while ($row = mysqli_fetch_assoc($result)) {
-    $user_id = $row['id'];
-}
-// Prepare the SQL statement to count data for the user
-$sql = "SELECT COUNT(*) AS total_count FROM cartdata WHERE user_id = '$user_id'";
-
-// Execute the query
-$result = mysqli_query($conn, $sql);
-
-// Fetch the result
-$row = mysqli_fetch_assoc($result);
-
-// Access the count
-$total_count = $row['total_count'];
 
 
-
-?>
-<!-- Display the total count as a badge -->
-<span class="position-absolute top-0 left-100 translate-middle badge rounded-pill bg-light text-dark">
-    <?php echo $total_count; ?>
-</span>
                         </li>
                         <li class="submenu">
                             <a href="javascript:;">Others</a>
