@@ -16,13 +16,18 @@
                         <li class="scroll-to-section"><a href="./index.php" class="active">Home</a></li>
                         <!-- <li class="scroll-to-section"><a href="#men">Men's</a></li>-->
                         <li class="scroll-to-section"><a href="./products.php">Products</a></li> 
+                        <?php
+                                if (isset($_SESSION['fullname']) && isset($_SESSION['email'])) {
+                                 
+                                ?>
                         <li class="scroll-to-section">
                             <a href="./cart.php">
                                 <img src="./assets/images/svg/cart.svg" alt="Cart Icon"> Cart
                             </a>
-
-
                         </li>
+                        <?php   
+                            }                                 
+                                ?>
                         <li class="submenu">
                             <a href="javascript:;">Others</a>
                             <ul>
@@ -36,8 +41,10 @@
                                     $fullname = $_SESSION['fullname'];
                                     $email = $_SESSION['email'];
                                 ?>
-                                <li><a href="contact.php">My Orders</a></li>
-                                <li><a href="wishlist.php">My WishList</a></li>
+                                <li><a href="myorders.php">My Orders</a></li>
+                                <li><a href="mywishlist.php">My WishList</a></li>
+                                <li><a href="logout.php">Logout</a></li>
+
                                 <?php
                                 } else {
                                 ?>

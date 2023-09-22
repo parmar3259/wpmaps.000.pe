@@ -7,8 +7,28 @@
 <link rel="stylesheet" href="assets/css/cart.css">
 
 <body>
-    <?php require('./extra_file/navbar.php');
+    <?php 
     session_start();
+    require('../database/connection.php');
+
+
+    if (isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
+        $fullname = $_SESSION['fullname'];
+        $email = $_SESSION['email'];
+        $query = "SELECT id FROM login WHERE fullname = '$fullname' AND email = '$email'";
+        $result = mysqli_query($conn, $query);
+        while ($row = mysqli_fetch_assoc($result)) {
+            $user_id = $row['id'];
+        }
+    } else {
+        echo '<div class="alert alert-danger" role="alert">';
+        echo 'You are not allowed on this page. Please log in first.';
+        echo '</div>';
+       die;
+    }
+    
+    require('./extra_file/navbar.php');
+
     ?>
     <section class="section">
         <div class="container pb-5 mt-n2 mt-md-n3">
@@ -23,7 +43,6 @@
 
 
                     <?php
-                    include('../database/connection.php');
                     if (isset($_SESSION['email']) && isset($_SESSION['fullname'])) {
                         $fullname = $_SESSION['fullname'];
                         $email = $_SESSION['email'];
